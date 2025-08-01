@@ -1,8 +1,15 @@
 trigger:
-- master   # Trigger on push to master branch
+  branches:
+    include:
+      - master
+
+pr:
+  branches:
+    include:
+      - master
 
 pool:
-  name: Default   # Self-hosted agent pool
+  name: Default
 
 steps:
 - checkout: self
