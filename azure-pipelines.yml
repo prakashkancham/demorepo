@@ -2,7 +2,7 @@ trigger:
 - main   # Trigger on push to main branch
 
 pool:
-  vmImage: ubuntu-latest
+  name: Default
 
 steps:
 - checkout: self
