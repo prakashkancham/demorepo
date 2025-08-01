@@ -1,0 +1,29 @@
+trigger:
+- main   # Trigger on push to main branch
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- checkout: self
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: '**/myfile.txt'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'drop'
+
+- task: InstallSSHKey@0
+  inputs:
+    sshPublicKey: '$(publicKey)'
+    sshKeySecureFile: 'id_rsa'    # Upload private key in Pipeline Library → Secure Files
+    knownHostsEntry: '$(vmHost)'
+
+- script: |
+    scp -o StrictHostKeyChecking=no $(Build.ArtifactStagingDirectory)/myfile.txt $(vmUser)@$(vmHost):/home/$(vmUser)/
+  displayName: 'Copy file to VM'
