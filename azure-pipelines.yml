@@ -18,6 +18,6 @@ steps:
     echo "Copying $(Build.SourcesDirectory)/myfile.txt to ${VM_USER}@${VM_HOST}:/home/${VM_USER}/"
     scp -o StrictHostKeyChecking=no "$(Build.SourcesDirectory)/myfile.txt" "${VM_USER}@${VM_HOST}:/home/${VM_USER}/"
   displayName: 'Copy file to VM'
-  #env:
-   # VM_USER: $(vmUser)
-    #VM_HOST: $(vmHost)
+  env:
+    VM_USER: azureuser
+    VM_HOST: 20.197.6.131
