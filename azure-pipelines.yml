@@ -1,5 +1,5 @@
 trigger:
-- master   # Trigger on push to main branch
+- master   # Trigger on push to master branch
 
 pool:
   name: Default   # Self-hosted agent pool
@@ -15,8 +15,8 @@ steps:
 
 # Copy file directly from source directory to VM
 - script: |
-    echo "Copying $(Build.SourcesDirectory)/myfile.txt to $vmUser@$vmHost:/home/$vmUser/"
-    scp -o StrictHostKeyChecking=no "$(Build.SourcesDirectory)/myfile.txt" $vmUser@$vmHost:/home/$vmUser/
+    echo "Copying $(Build.SourcesDirectory)/myfile.txt to ${vmUser}@${vmHost}:/home/${vmUser}/"
+    scp -o StrictHostKeyChecking=no "$(Build.SourcesDirectory)/myfile.txt" "${vmUser}@${vmHost}:/home/${vmUser}/"
   displayName: 'Copy file to VM'
   env:
     vmUser: $(vmUser)
