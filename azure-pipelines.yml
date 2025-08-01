@@ -18,11 +18,11 @@ steps:
     pathToPublish: '$(Build.ArtifactStagingDirectory)'
     artifactName: 'drop'
 
-- task: InstallSSHKey@0
-  inputs:
-    sshPublicKey: '$(publicKey)'
-    sshKeySecureFile: 'id_rsa'    # Upload private key in Pipeline Library → Secure Files
-    knownHostsEntry: '$(vmHost)'
+#- task: InstallSSHKey@0
+ # inputs:
+  #  sshPublicKey: '$(publicKey)'
+   # sshKeySecureFile: 'id_rsa'    # Upload private key in Pipeline Library → Secure Files
+    #knownHostsEntry: '$(vmHost)'
 
 - script: |
     scp -o StrictHostKeyChecking=no $(Build.ArtifactStagingDirectory)/myfile.txt $(vmUser)@$(vmHost):/home/$(vmUser)/
