@@ -2,7 +2,7 @@ trigger:
 - main   # Trigger on push to main branch
 
 pool:
-  name: Default
+  name: Default   # Self-hosted agent pool
 
 steps:
 - checkout: self
@@ -13,17 +13,17 @@ steps:
     Contents: '**/myfile.txt'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: 'drop'
+# Skip publishing artifact if you don't need it
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#     pathToPublish: '$(Build.ArtifactStagingDirectory)'
+#     artifactName: 'drop'
 
-#- task: InstallSSHKey@0
- # inputs:
-  #  sshPublicKey: '$(publicKey)'
-   # sshKeySecureFile: 'id_rsa'    # Upload private key in Pipeline Library → Secure Files
-    #knownHostsEntry: '$(vmHost)'
-
+# Copy file using scp
 - script: |
-    scp -o StrictHostKeyChecking=no $(Build.ArtifactStagingDirectory)/myfile.txt $(vmUser)@$(vmHost):/home/$(vmUser)/
+    echo "Copying $(Build.ArtifactStagingDirectory)/myfile.txt to $vmUser@$vmHost:/home/$vmUser/"
+    scp -o StrictHostKeyChecking=no "$(Build.ArtifactStagingDirectory)/myfile.txt" $vmUser@$vmHost:/home/$vmUser/
   displayName: 'Copy file to VM'
+  env:
+    vmUser: $(vmUser)
+    vmHost: $(vmHost)
